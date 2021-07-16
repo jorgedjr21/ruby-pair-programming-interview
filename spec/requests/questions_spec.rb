@@ -15,6 +15,10 @@ RSpec.describe "Questions Request", type: :request do
       let(:tenant) { create(:tenant) }
       let(:api_key) { tenant.api_key }
 
+      it 'must count the tenant request' do
+        expect { subject }.to change(TenantRequest, :count).by(1)
+      end
+
       context "when questions exists" do
         it 'must have an :ok status' do
           subject

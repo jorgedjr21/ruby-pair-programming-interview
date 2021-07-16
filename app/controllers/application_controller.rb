@@ -8,6 +8,12 @@ class ApplicationController < ActionController::API
   def check_tenant_api_key
     tenant = Tenant.find_by(api_key: request.headers['Auth'])
 
-    render json: { message: I18n.t("unauthorized") }, status: :unauthorized if tenant.blank?  
+    render json: { message: I18n.t("unauthorized") }, status: :unauthorized if tenant.blank?
+    count_tenant_request(tenant)
+  end
+
+  def count_tenant_request(tenant)
+    tenant_request_counter = TenantRequestCounter.new(tenant: tenant)
+    tenant_request_counter.count_request
   end
 end
