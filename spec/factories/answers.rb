@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :answer do
-    body { "This is a body message" }
+    body { Faker::Lorem.sentence }
     question
     user
   end
