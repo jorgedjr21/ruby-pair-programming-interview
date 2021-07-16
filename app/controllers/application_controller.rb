@@ -8,6 +8,6 @@ class ApplicationController < ActionController::API
   def check_tenant_api_key
     tenant = Tenant.find_by(api_key: request.headers['Auth'])
 
-    render json: { message: 'You are not authorized to perform this action. Please, provide a valid api_key' }, status: :unauthorized if tenant.blank?  
+    render json: { message: I18n.t("unauthorized") }, status: :unauthorized if tenant.blank?  
   end
 end
