@@ -18,23 +18,24 @@ RSpec.describe "Questions Request", type: :request do
         expect(json_response).to_not include(private_question.to_json)
       end
 
-      it 'should have the public questions' do
+      it 'must have the public questions' do
         subject
-        serialized_questions = ActiveModel::SerializableResource.new(Question.where(is_private: false), each_serializer: QuestionSerializer)
-        expect(json_response).to include(questions.as_json)
+        serialized_questions = questions.map { |question| QuestionSerializer.new(question).to_json }.first
+        expect(json_response).to include(JSON.parse(serialized_questions))
       end
 
-      it 'should have the public question '
+      it 'must have the question with the answer' do
+        subject
+        question = QuestionSerializer.new(public_question).to_json
+
+        expect(json_response).to include(JSON.parse(question))
+      end
+
 
       it 'must have the question name' do
         subject
 
         expect(json_response.first.keys).to include('title')
-      end
-
-      it 'must have the answers of each question' do
-        subject  
-        p json_response
       end
     end
   end
